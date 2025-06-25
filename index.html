@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQI Shower - Real-time Air Quality</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                  Air Quality Index
+                  </div>
+                
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-sun"></i> <i class="fas fa-moon hidden"></i> </button>
+
+                <button class="burger-menu-toggle" aria-label="Toggle navigation menu">
+                    <span class="line"></span>
+                    <span class="line"></span>
+                    <span class="line"></span>
+                </button>
+
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about-us-section">About Us</a></li>
+                        </ul>
+                </nav>
+            </div>
+            
+            <div class="search-container">
+                <input type="text" id="cityInput" placeholder="Enter city name...">
+                <button id="searchButton">Search</button>
+                </div>
+        </header>
+
+        <main>
+            <section id="aqi-display-section">
+                <div id="loadingIndicator" class="hidden">Loading AQI data...</div>
+                <div id="errorMessage" class="hidden"></div>
+
+                <div id="cityAqiCardContainer">
+                    </div>
+            </section>
+            
+            <section id="about-us-section" class="about-us-content hidden">
+                <h2>About AQI</h2>
+                
+            </section>
+            <h3>About Us</h3>
+            <p>Welcome to AQI! Our goal is to provide you with real-time Air Quality Index (AQI) data to help you stay informed about the air you breathe in various cities around the world.</p>
+                
+                <h3>What is AQI?</h3>
+                <p>The Air Quality Index (AQI) is a standard scale used to report daily air quality. It tells you how clean or polluted your air is, and what associated health effects might be a concern for you.</p>
+                <p>The AQI focuses on health effects you might experience within a few hours or days after breathing polluted air. Different countries may use slightly different scales, but generally, a higher AQI value indicates a greater level of air pollution and a greater health concern.</p>
+                <p>Common categories include:</p>
+                <ul>
+                    <li><strong>Good (0-50):</strong> Air quality is considered satisfactory, and air pollution poses little or no risk.</li>
+                    <li><strong>Moderate (51-100):</strong> Air quality is acceptable; however, for some pollutants there may be a moderate health concern for a very small number of people.</li>
+                    <li><strong>Unhealthy for Sensitive Groups (USG, 101-150):</strong> Members of sensitive groups may experience health effects. The general public is not likely to be affected.</li>
+                    <li><strong>Unhealthy (151-200):</strong> Everyone may begin to experience health effects; members of sensitive groups may experience more serious health effects.</li>
+                    <li><strong>Very Unhealthy (201-300):</strong> Health warnings of emergency conditions. The entire population is more likely to be affected.</li>
+                    <li><strong>Hazardous (301+):</strong> Health alert: everyone may experience more serious health effects.</li>
+                </ul>
+                <p>Our data is sourced from the World Air Quality Index project (aqicn.org), which aggregates information from various monitoring stations worldwide.</p>
+                <p>Stay healthy, breathe clean air!</p>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 AQI Shower. This is a school project.</p>
+            <p>Data provided by <a href="https://aqicn.org/" target="_blank" rel="noopener noreferrer">World Air Quality Index Project</a>.</p>
+              <p>Developed by <a href="https://github.com/oggy12x54">Sachin</a> </p>
+              <p class="end">
+
+              </p>
+              
+              
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

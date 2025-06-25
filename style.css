@@ -1,0 +1,493 @@
+/* Basic Resets & Global Variables */
+:root {
+    /* Dark Theme Colors (default) */
+    --bg-dark: #1A1A1A; /* Main background */
+    --bg-medium-dark: #282828; /* Card/section background */
+    --text-light: #F0F0F0; /* Primary text */
+    --text-medium: #AAAAAA; /* Secondary text */
+    --accent-color: #3498DB; /* Button/interactive accent */
+    --nav-bg: #222222; /* Nav background for mobile menu */
+    --border-color: rgba(255,255,255,0.1); /* Subtle borders */
+
+    /* AQI Status Colors (Vibrant, maintain across themes) */
+    --aqi-good: #2ECC71; /* Green */
+    --aqi-moderate: #F1C40F; /* Yellow */
+    --aqi-usg: #E67E22; /* Orange */
+    --aqi-unhealthy: #E74C3C; /* Red */
+    --aqi-very-unhealthy: #9B59B6; /* Purple */
+    --aqi-hazardous: #C0392B; /* Maroon */
+
+    /* Universal rounded corners */
+    --border-radius-base: 8px;
+    --border-radius-card: 12px;
+}
+
+/* Light Theme Variables (overrides dark theme when .light-theme class is active) */
+html.light-theme {
+    --bg-dark: #F0F2F5; /* Lighter main background */
+    --bg-medium-dark: #FFFFFF; /* White card/section background */
+    --text-light: #333333; /* Darker primary text */
+    --text-medium: #555555; /* Darker secondary text */
+    --accent-color: #007BFF; /* Brighter blue accent */
+    --nav-bg: #F8F9FA; /* Lighter nav background */
+    --border-color: rgba(0,0,0,0.1); /* Subtle borders for light theme */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
+}
+
+/* Add this to prevent scrolling when burger menu is open */
+html.no-scroll {
+    overflow: hidden;
+}
+
+#app {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 40px);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Header & Search Bar */
+header {
+    background-color: var(--bg-medium-dark);
+    border-radius: var(--border-radius-card);
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    padding: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative; /* For burger and nav positioning */
+}
+
+.logo {
+    font-size: 2.2em;
+    font-weight: 700;
+    color: var(--text-light);
+}
+
+.search-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+#cityInput {
+    padding: 12px 20px;
+    flex-grow: 1;
+    max-width: 350px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-base);
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+#cityInput::placeholder {
+    color: var(--text-medium);
+}
+
+#cityInput:focus {
+    border-color: var(--accent-color);
+}
+
+#searchButton, .theme-toggle, .burger-menu-toggle {
+    padding: 12px 20px;
+    background-color: var(--accent-color);
+    color: var(--text-light);
+    border: none;
+    border-radius: var(--border-radius-base);
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#searchButton:hover, .theme-toggle:hover, .burger-menu-toggle:hover {
+    background-color: #2980B9; /* Darker accent */
+    transform: translateY(-2px);
+}
+
+#searchButton:active, .theme-toggle:active, .burger-menu-toggle:active {
+    transform: translateY(0);
+}
+
+/* --- Burger Menu & Navigation --- */
+.burger-menu-toggle {
+    display: none; /* Hidden by default on larger screens */
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001; /* Above other content */
+    margin-left: 15px; /* Space from theme toggle */
+}
+
+.burger-menu-toggle .line {
+    width: 100%;
+    height: 3px;
+    background-color: var(--text-light);
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
+    transform-origin: 1px; /* For rotation effect */
+}
+
+/* Burger menu animation when open */
+html.menu-open .burger-menu-toggle .line:nth-child(1) {
+    transform: rotate(45deg);
+}
+html.menu-open .burger-menu-toggle .line:nth-child(2) {
+    opacity: 0; /* Hide middle line */
+}
+html.menu-open .burger-menu-toggle .line:nth-child(3) {
+    transform: rotate(-45deg);
+}
+
+.main-nav {
+    display: block; /* Visible by default on desktop */
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.main-nav a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 1.1em;
+    padding: 5px 10px;
+    border-radius: var(--border-radius-base);
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.main-nav a:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: var(--accent-color);
+}
+
+/* --- Main Content Area --- */
+main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px 0;
+}
+
+#aqi-display-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px; /* Space before About Us */
+}
+
+#loadingIndicator, #errorMessage {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2em;
+    color: var(--text-medium);
+}
+
+#errorMessage {
+    color: var(--aqi-unhealthy);
+}
+
+/* AQI Card Styling */
+#cityAqiCardContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.aqi-card {
+    background-color: var(--bg-medium-dark);
+    padding: 25px;
+    border-radius: var(--border-radius-card);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.aqi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+}
+
+.aqi-card h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: var(--text-light);
+}
+
+.aqi-card .aqi-value {
+    font-size: 3em;
+    font-weight: 700;
+    margin-bottom: 15px;
+    padding: 10px 0;
+    border-radius: var(--border-radius-base);
+    display: inline-block;
+    min-width: 120px;
+    color: var(--bg-dark); /* Text color for AQI value will contrast with its background */
+}
+
+.aqi-card .status {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: var(--text-light); /* Default status text color */
+}
+
+.aqi-card .details {
+    font-size: 0.95em;
+    color: var(--text-medium);
+    line-height: 1.8;
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+/* AQI Status-based Styling */
+.aqi-card.good .aqi-value { background-color: var(--aqi-good); }
+.aqi-card.good .status { color: var(--aqi-good); }
+
+.aqi-card.moderate .aqi-value { background-color: var(--aqi-moderate); }
+.aqi-card.moderate .status { color: var(--aqi-moderate); }
+
+.aqi-card.usg .aqi-value { background-color: var(--aqi-usg); }
+.aqi-card.usg .status { color: var(--aqi-usg); }
+
+.aqi-card.unhealthy .aqi-value { background-color: var(--aqi-unhealthy); color: var(--text-light);}
+.aqi-card.unhealthy .status { color: var(--aqi-unhealthy); }
+
+.aqi-card.very-unhealthy .aqi-value { background-color: var(--aqi-very-unhealthy); color: var(--text-light);}
+.aqi-card.very-unhealthy .status { color: var(--aqi-very-unhealthy); }
+
+.aqi-card.hazardous .aqi-value { background-color: var(--aqi-hazardous); color: var(--text-light);}
+.aqi-card.hazardous .status { color: var(--aqi-hazardous); }
+
+
+/* About Us Section */
+.about-us-content { /* Renamed class for consistency with ID */
+    background-color: var(--bg-medium-dark);
+    padding: 30px;
+    border-radius: var(--border-radius-card);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    max-width: 800px;
+    margin: 20px auto;
+    text-align: left; /* Align text left within section */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.about-us-content h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center; /* Center heading */
+    color: var(--text-light);
+}
+
+.about-us-content h3 {
+    font-size: 1.5em;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    color: var(--text-light);
+}
+
+.about-us-content p, .about-us-content ul {
+    font-size: 1.1em;
+    color: var(--text-medium);
+    margin-bottom: 15px;
+}
+
+.about-us-content ul {
+    list-style: none; /* Remove default bullets */
+    padding-left: 20px;
+}
+
+.about-us-content ul li {
+    margin-bottom: 8px;
+    position: relative;
+}
+
+/* Custom bullet for list items */
+.about-us-content ul li::before {
+    content: '•'; /* Use a simple bullet point */
+    color: var(--accent-color);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+    color: var(--text-medium);
+    font-size: 0.9em;
+    border-top: 1px solid var(--border-color);
+    transition: color 0.3s ease, border-color 0.3s ease;
+    margin-bottom: 90px;
+}
+
+footer p {
+    margin-bottom: 5px;
+}
+
+footer a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* --- Responsive Adjustments (Crucial for Burger Menu) --- */
+@media (max-width: 768px) {
+    body { padding: 15px; }
+    
+    .header-content {
+        flex-wrap: wrap; /* Allow elements to wrap */
+        justify-content: space-between; /* Space out items */
+    }
+
+    .logo {
+        flex-basis: auto; /* Allow logo to take its natural width */
+        margin-right: auto; /* Push others to the right */
+    }
+
+    .theme-toggle {
+        order: 1; /* Position theme toggle before burger on small screens */
+        margin-right: 10px; /* Space between toggle and burger */
+    }
+
+    .burger-menu-toggle {
+        display: flex; /* Show burger menu on small screens */
+        order: 2; /* Position burger after theme toggle */
+    }
+
+    .main-nav {
+        /* Mobile menu styling */
+        position: fixed;
+        top: 0;
+        right: -100%; /* Start off-screen to the right */
+        width: 70%; /* Adjust width as needed */
+        max-width: 300px; /* Max width for mobile menu */
+        height: 100vh;
+        background-color: var(--nav-bg);
+        box-shadow: -5px 0 15px rgba(0,0,0,0.4);
+        padding-top: 80px; /* Space from top to avoid header content */
+        transition: right 0.3s ease-in-out;
+        z-index: 1000;
+        display: block; /* Ensure it behaves as a block */
+    }
+
+    .main-nav ul {
+        flex-direction: column; /* Stack links vertically */
+        padding: 20px;
+        gap: 15px;
+    }
+
+    .main-nav a {
+        display: block; /* Make links full width */
+        padding: 15px 10px;
+        text-align: center;
+        font-size: 1.2em;
+    }
+
+    /* When menu is open, slide it into view */
+    html.menu-open .main-nav {
+        right: 0;
+    }
+
+    .search-container {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    #cityInput, #searchButton {
+        width: 100%;
+        max-width: unset;
+    }
+
+    .aqi-card {
+        max-width: 300px;
+    }
+
+    .about-us-content {
+        padding: 20px; /* Reduce padding on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .logo { font-size: 1.8em; }
+    .theme-toggle { padding: 10px 15px; } /* Slightly smaller for very small screens */
+}
+
+/* Overlay when menu is open (Optional but good for UX) */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 999; /* Below menu, above content */
+}
+html.menu-open .overlay {
+    display: block;
+}
+
+.end {
+  text: black
+}
+}
